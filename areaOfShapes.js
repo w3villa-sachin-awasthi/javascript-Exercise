@@ -33,7 +33,7 @@ if (
     let area = 4 * Math.PI * Math.pow(radius, 2);
     console.log("area of sphere is ", area);
   } else {
-    console.log("Invalid shape! Please enter rectangle, square, or triangle.");
+    console.log("Invalid shape! ");
   }
 } else {
   console.log("Invalid type of shape.");
