@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans bg-slate-900">
+
+    <div class="container mx-auto p-5">
+        <button onclick="handleClick()" class="bg-blue-500 text-white px-4 py-2 rounded mb-5 hover:bg-blue-700">Fetch Products</button>
+
+        <!-- Loading Indicator -->
+        <div id="loading" class="text-center text-gray-600 hidden">
+            <p>Loading...</p>
+        </div>
+
+        <!-- Product List -->
+        <div id="productList" class="flex flex-wrap gap-6 justify-center">
+            <!-- Product Cards will be appended here -->
+        </div>
+    </div>
+
+    <!-- Load Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+        async function handleClick() {
+            // Show loading indicator
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('productList').innerHTML = ''; // Clear previous products
+
+            try {
+                // Fetch data from API
+                const response = await axios.get('https://fakestoreapi.com/products?limit=5');
+                console.log(response.data);
+
+                // Hide loading indicator
+                document.getElementById('loading').classList.add('hidden');
+
+                // Render product cards
+                const productList = document.getElementById('productList');
+                response.data.forEach(product => {
+                    const productCard = document.createElement('div');
+                    productCard.classList.add('bg-white', 'p-4', 'rounded-lg', 'shadow-lg', 'transition', 'transform', 'hover:scale-105', 'w-full', 'sm:w-1/2', 'md:w-1/3', 'lg:w-1/4');
+                    productCard.innerHTML = `
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-48 object-cover rounded-t-lg mb-4">
+                        <h3 class="text-lg font-semibold mb-2">${product.title}</h3>
+                        <p class="text-gray-500 text-sm">${product.category}</p>
+                        <p class="mt-2 text-gray-700">${product.description.substring(0, 100)}...</p>
+                        <p class="mt-4 text-xl font-bold">${product.price}$</p>
+                    `;
+                    productList.appendChild(productCard);
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                // Hide loading indicator and display error
+                document.getElementById('loading').classList.add('hidden');
+                alert('Error fetching products. Please try again later.');
+            }
+        }
+    </script>
+
+</body>
+</html>

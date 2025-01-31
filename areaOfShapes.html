@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape Area Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center min-h-screen  bg-slate-900">
+
+    <div class="w-96 p-6 bg-white rounded-lg shadow-xl">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">Shape Area Calculator</h2>
+
+        <div class="block font-medium text-gray-700">Choose a shape:</div>
+        <select id="shape" onchange="handleShapes()" class="w-full p-2 mt-2 border rounded-md focus:ring-2 focus:ring-blue-500">
+            <option value="">-- Select --</option>
+            <option value="s">Square</option>
+            <option value="r">Rectangle</option>
+            <option value="t">Triangle</option>
+            <option value="c">Circle</option>
+            <option value="sh">Sphere</option>
+        </select>
+
+        <div id="inputs" class="mt-4 space-y-2"></div>
+
+        <button onclick="calculateArea()" 
+            class="w-full mt-4 bg-blue-600 text-white py-2 px-4 rounded-md font-semibold hover:bg-blue-700 transition-all">
+            Calculate Area
+        </button>
+
+        <h3 id="result" class="text-lg font-bold text-center text-gray-800 mt-4"></h3>
+    </div>
+
+    <script>
+        function handleShapes() {
+            const shape = document.getElementById("shape").value;
+            let inputs = "";
+        
+            if (shape === "s") {
+                inputs = `<div><label class="block font-medium text-gray-700">Side:</label>
+                          <input type="number" id="side" class="w-full p-2 border rounded-md"></div>`;
+            } else if (shape === "r") {
+                inputs = `<div><label class="block font-medium text-gray-700">Length:</label>
+                          <input type="number" id="length" class="w-full p-2 border rounded-md"></div>
+                          <div><label class="block font-medium text-gray-700">Width:</label>
+                          <input type="number" id="width" class="w-full p-2 border rounded-md"></div>`;
+            } else if (shape === "t") {
+                inputs = `<div><label class="block font-medium text-gray-700">Base:</label>
+                          <input type="number" id="base" class="w-full p-2 border rounded-md"></div>
+                          <div><label class="block font-medium text-gray-700">Height:</label>
+                          <input type="number" id="height" class="w-full p-2 border rounded-md"></div>`;
+            } else if (shape === "c" || shape === "sh") {
+                inputs = `<div><label class="block font-medium text-gray-700">Radius:</label>
+                          <input type="number" min="0" id="radius" class="w-full p-2 border rounded-md"></div>`;
+            }
+
+            document.getElementById("inputs").innerHTML = inputs;
+        }
+
+        function calculateArea() {
+            const shape = document.getElementById("shape").value;
+            let area = 0;
+        
+            if(shape==""){
+                alert("select any shape!!");
+                return ;
+            }else if (shape === "s") {
+                let side = parseFloat(document.getElementById("side").value);
+                area = side * side;
+            } else if (shape === "r") {
+                let length = parseFloat(document.getElementById("length").value);
+                let width = parseFloat(document.getElementById("width").value);
+                area = length * width;
+            } else if (shape === "t") {
+                let base = parseFloat(document.getElementById("base").value);
+                let height = parseFloat(document.getElementById("height").value);
+                area = 0.5 * base * height;
+            } else if (shape === "c") {
+                let radius = parseFloat(document.getElementById("radius").value);
+                area = Math.PI * Math.pow(radius, 2);
+            } else if (shape === "sh") {
+                let radius = parseFloat(document.getElementById("radius").value);
+                area = 4 * Math.PI * Math.pow(radius, 2);
+            }
+            
+            document.getElementById("result").innerText = `Area: ${area.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
